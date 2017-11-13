@@ -1,0 +1,20 @@
+     This is the tile set for tower defence games. Also including other art for game (castles, trees etc.). You can easy create a lot of different levels for your game.
+     All in vector so you can easy scale it without losing quality.
+
+    You will get:
+
+- Ai file (1 file) - opens in Adobe Illustrator;
+- EPS file (1 file);
+- JPG file (4 files) - 1 tile set light ground, 1 tile set dark ground, 1 items (set of castles), 1 animations;
+- Transparent PNG (4 files) - 32x32, 64x64, 128x128, 256x256 pixels;
+- Transparent PNG ready for tile editors (4 files) - 32x32, 64x64, 128x128, 256x256 pixels;
+- TMX for tile editors ( Tiled etc.) (4 files) - 32x32, 64x64, 128x128, 256x256 pixels;
+- Transparent PNG (596 files) - each in different files ( 32x32 (149 files), 64x64 (149 files), 128x128 (149 files), 256x256 (149 files));
+- Transparent PNG Spritesheets (Animations)(5 files) - bomb, arrow, big arrow, fire, magik;
+- PNG Sequence (5 animations) (15 files) - bomb, arrow, big arrow, fire, magik;
+
+      See screenshots for more detailed preview.
+
+      If you have some questions, please write on my email yurkaq@gmail.com.
+
+      Please, rate if you like it.
