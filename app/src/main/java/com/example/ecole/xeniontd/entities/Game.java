@@ -1,7 +1,6 @@
 package com.example.ecole.xeniontd.entities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -26,9 +25,6 @@ import com.example.ecole.xeniontd.utils.c;
 
 import java.util.ArrayList;
 
-/**
- * Created by Ecole on 1/6/2016.
- */
 public class Game extends View {
 
     private GameCell board[][];
@@ -67,7 +63,7 @@ public class Game extends View {
 
     private int round;
     private int roundDuration;
-    private Handler hand;
+    private Handler monsterHand;
 
     private int cellWidth;
     private int cellHeight;
@@ -101,7 +97,7 @@ public class Game extends View {
         this.cellWidth = (ctx.getResources().getDisplayMetrics().widthPixels / 18);
         this.cellHeight = (ctx.getResources().getDisplayMetrics().heightPixels / 11);
 
-        this.towerView = new TowerView(ctx, cellWidth, cellHeight, hand);
+        this.towerView = new TowerView(ctx, cellWidth, cellHeight, monsterHand);
         this.restart = true;
 
         //on rajoute la vue menu
@@ -111,24 +107,24 @@ public class Game extends View {
     }
 
     private void configureHandler() {
-        hand = new Handler() {
+        monsterHand = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 //TODO: Handle different types of messages
-                String[] status = (String[]) msg.obj;
-                if (status[0].equals("death")) {
-                    Log.d("Got a new message", " le monstre " + status[1] + " est desormais " + (Integer.parseInt(status[2]) == c.MONSTER_FINISHED ? " a la fin du terrain " : " mort"));
+                EntityStatus entitiesStatus = (EntityStatus) msg.obj;
+
+                if (entitiesStatus.getEntityState().equals(c.ENTITY_STATE_CODE_DEATH)) {
 
                     nbMonstre--;
                     customPGB.setNbMonstre(nbMonstre);
 
-                    if (Integer.parseInt(status[2]) == c.MONSTER_FINISHED) {
+                    if (entitiesStatus.getEntityCode() == c.MONSTER_FINISHED) {
                         setNbVies(getNbVies() - 1);
-                    } else if (Integer.parseInt(status[2]) == c.MONSTER_DEAD)
+                    } else if (entitiesStatus.getEntityCode() == c.MONSTER_DEAD)
                         setNbCash(String.valueOf(Integer.parseInt(getNbCash()) + 50));
 
-                    monsterLayout.removeView(tabMonstres.get(Integer.parseInt(status[1])));
-                    hand.removeCallbacks(tabMonstres.get(Integer.parseInt(status[1])));
+                    monsterLayout.removeView(tabMonstres.get(entitiesStatus.getMonsterID()));
+                    monsterHand.removeCallbacks(tabMonstres.get(entitiesStatus.getMonsterID()));
 
                     if (nbMonstre == 0) {
                         round++;
@@ -137,15 +133,18 @@ public class Game extends View {
                     }
                     updateGameMenu();
                 }
-                else if(status[0].equals("position")){
+                else if(entitiesStatus.getEntityState().equals(c.ENTITY_CODE_POSITION)){
                     //Log.d("d","Le montre " + status[1] + "est a la case" + status[2]);
-                    towerView.addMonstrePosition(status[1], status[2]);
+                    towerView.addMonstrePosition(
+                            String.valueOf(entitiesStatus.getMonsterID()),
+                            String.valueOf(entitiesStatus.getEntityCode())
+                            );
                 }
-                else if(status[0].equals("tour")){
+                else if ( entitiesStatus.getEntityType().equals(c.ENTITY_TYPE_TOUR)){
                     //Log.d("d","Le monstre " + status[2] + "est il dans le range de la tour " + status[3] + " ? " + status[1]);
-                    if(status[1].equals("true")){
-                        Monsters m = tabMonstres.get(Integer.parseInt(status[2]));
-                        Tower t = towerView.findTowerById(Integer.parseInt(status[3]));
+                    if(String.valueOf(entitiesStatus.getEntityState()).equals("true")){
+                        Monsters m = tabMonstres.get(entitiesStatus.getMonsterID());
+                        Tower t = towerView.findTowerById(entitiesStatus.getTowerID());
                         //Log.d("haha","La tour " + t.getId() + "Tire sur le monstre numero " + m.getIdMonster());
                         if(m.isAlive())
                             t.fire(m);
@@ -180,7 +179,7 @@ public class Game extends View {
         if (restart) {
             GameCell cellDepart = getCellByNumber(10);
             for (int i = 0; i < nbMonstre; i++) {
-                tabMonstres.add(new Monsters(ctx, i, cellDepart.getCoordX(), cellDepart.getCoordY(), hand, monstresBmp[(int) (Math.random() * 5)], 100, towerView));
+                tabMonstres.add(new Monsters(ctx, i, cellDepart.getCoordX(), cellDepart.getCoordY(), monsterHand, monstresBmp[(int) (Math.random() * 5)], 100, towerView));
             }
         }
 
@@ -324,7 +323,7 @@ public class Game extends View {
 
     public void setMenuInteraction() {
         slide(c.CLOSE);
-        final GestureDetector gdt = new GestureDetector(new GestureListener(ctx, this, this.board, this.rootLayout, this.towerCaseNumber, this.hand));
+        final GestureDetector gdt = new GestureDetector(new GestureListener(ctx, this, this.board, this.rootLayout, this.towerCaseNumber, this.monsterHand));
 
         mainView.findViewById(R.id.gameLayout).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -350,7 +349,7 @@ public class Game extends View {
             m.setIsAlive(true);
             m.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
             m.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-            hand.postDelayed(m, delay);
+            monsterHand.postDelayed(m, delay);
             delay += 2200;
         }
         if (restart) {
@@ -575,11 +574,11 @@ public class Game extends View {
     }
 
     public Handler getHand() {
-        return hand;
+        return monsterHand;
     }
 
     public void setHand(Handler hand) {
-        this.hand = hand;
+        this.monsterHand = monsterHand;
     }
 
     public RelativeLayout getRootLayout() {
@@ -645,7 +644,7 @@ public class Game extends View {
 
     public void pauseGame() {
         for (Monsters m : tabMonstres) {
-            hand.removeCallbacks(m);
+            monsterHand.removeCallbacks(m);
         }
     }
 
@@ -653,9 +652,9 @@ public class Game extends View {
         int delay = 2000;
         for (Monsters m : tabMonstres) {
             if (m.isOnField() && m.isAlive())
-                hand.post(m);
+                monsterHand.post(m);
             else if (m.isAlive()) {
-                hand.postDelayed(m, delay);
+                monsterHand.postDelayed(m, delay);
                 delay += 2000;
             }
         }

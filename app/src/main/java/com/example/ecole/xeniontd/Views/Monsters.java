@@ -13,11 +13,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
+import com.example.ecole.xeniontd.entities.EntityStatus;
 import com.example.ecole.xeniontd.utils.c;
 
-/**
- * Created by Ecole on 1/11/2016.
- */
 public class Monsters extends View implements Runnable {
 
     private static final int BMP_ROWS = 4;
@@ -37,8 +35,6 @@ public class Monsters extends View implements Runnable {
     int idMonster;
     private int nbStep;
     private int FPS;
-
-
 
     int beginX;
     int beginY;
@@ -225,26 +221,20 @@ public class Monsters extends View implements Runnable {
 
     private void sendInfosToGame() {
 
-
-        if (isFinished()) {
-            String[] messageString = new String[3];
+        if (isFinished() || !isAlive()) {
             Message message = hand.obtainMessage();
-            messageString[0] = "death";
-            messageString[1] = String.valueOf(idMonster);
-            messageString[2] = String.valueOf(c.MONSTER_FINISHED);
-            message.obj = messageString;
+            EntityStatus entityStatus =
+                    new EntityStatus("monster", "death", c.MONSTER_DEAD);
+
+            if(isFinished()) {
+                entityStatus.setEntityCode(c.MONSTER_FINISHED);
+            }
+
+            entityStatus.setMonsterID(idMonster);
+            message.obj = entityStatus;
             hand.sendMessage(message);
         }
 
-        if (!isAlive()) {
-            String[] messageString = new String[3];
-            Message message = hand.obtainMessage();
-            messageString[0] = "death";
-            messageString[1] = String.valueOf(idMonster);
-            messageString[2] = String.valueOf(c.MONSTER_DEAD);
-            message.obj = messageString;
-            hand.sendMessage(message);
-        }
 
 
     }
@@ -270,7 +260,6 @@ public class Monsters extends View implements Runnable {
         }
         nbStep++;
         currentFrame = ++currentFrame % BMP_COLUMNS;
-
     }
 
     public int getWalk() {
@@ -627,12 +616,17 @@ public class Monsters extends View implements Runnable {
     public void setCurrentCell(int currentCell) {
 
         this.currentCell = currentCell;
-        String[] messageString = new String[3];
         Message message = hand.obtainMessage();
-        messageString[0] = "position";
-        messageString[1] = String.valueOf(idMonster);
-        messageString[2] = String.valueOf(this.currentCell);
-        message.obj = messageString;
+        EntityStatus entityStatus =
+                new EntityStatus("cell",c.ENTITY_CODE_POSITION, this.currentCell);
+
+        if (isFinished()) {
+            entityStatus.setEntityCode(c.MONSTER_FINISHED);
+        }
+
+        entityStatus.setMonsterID(idMonster);
+
+        message.obj = entityStatus;
         hand.sendMessage(message);
 
     }

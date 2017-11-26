@@ -34,6 +34,8 @@ public class AnnimationMissile extends View implements Runnable {
     float xcible;
     float ycible;
 
+    float missileSize;
+
 
     float xcible1;    // coord x cible dans nouveau repère
     float ycible1;    // coord y cible dans nouveau repère
@@ -74,6 +76,7 @@ public class AnnimationMissile extends View implements Runnable {
         ycible1 = ycible * -1 + ymissile;
         this.t = t;
         this.m = m;
+        missileSize = 80;
         t.setCanShot(false);
 
         if (xcible1 != 0) {
@@ -143,7 +146,7 @@ public class AnnimationMissile extends View implements Runnable {
             invalidate();
             x += (xmissileInitiale - xcible > 0) ? -step : step;
 //            Log.d("Compteur  : ", "" + AnnimationMissile.compteur);
-            if (!(Math.abs(x) > Math.abs(xmissileInitiale - xcible)))
+            if (!(Math.abs(x) > Math.abs(xmissileInitiale - xcible + missileSize)))
                 handler.postDelayed(this, 10);
             else {
                 rl.removeView(this);

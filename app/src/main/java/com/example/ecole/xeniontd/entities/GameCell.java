@@ -6,9 +6,6 @@ import android.widget.ImageView;
 import com.example.ecole.xeniontd.R;
 import com.example.ecole.xeniontd.utils.c;
 
-/**
- * Created by Ecole on 1/6/2016.
- */
 public class GameCell extends ImageView {
 
     private int cellNumber;

@@ -15,9 +15,6 @@ import android.widget.RelativeLayout;
 
 import com.example.ecole.xeniontd.R;
 
-/**
- * Created by Ecole on 1/17/2016.
- */
 public class CustomProgressBar extends View {
 
     LinearLayout progressBar;

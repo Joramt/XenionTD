@@ -39,6 +39,10 @@ public final class c {
     public static String ARRAY_TURN_RIGHT_Y[] = {"14308","217210","380308"};
     public static String ARRAY_END_OF_BOARD[] = {"4780"};
 
+    public static String ENTITY_STATE_CODE_DEATH = "death";
+    public static String ENTITY_CODE_POSITION = "position";
+    public static String ENTITY_TYPE_TOUR = "tour";
+
     public static boolean OPEN = true;
     public static boolean CLOSE = false;
 

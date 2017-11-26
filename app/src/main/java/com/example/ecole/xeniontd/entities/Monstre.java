@@ -5,24 +5,20 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.Log;
 
-
-/**
- * Created by Ecole on 1/16/2016.
- */
 public class Monstre {
-    
+
     private static final int BMP_ROWS = 4;
     private static final int BMP_COLUMNS = 3;
     Context ctx;
     Handler hand;
-    
+
     int idMonster;
     Bitmap img;
     int currentCase;
-    
+
     int initialLifePoints;
     int currentLifePoint;
-    
+
     boolean isAlive;
     boolean isOnTheField;
     boolean isAtTheEnd;
@@ -37,24 +33,24 @@ public class Monstre {
 
     int stepX = 5;
     int stepY = 5;
-    
+
     int cellWidth;
     int cellHeight;
-    
+
     public Monstre(Context ctx, int idMonster, int initialLifePoints, Bitmap img, Handler hand, int beginX, int beginY, int cellWidth, int cellHeight, String owner){
-        
+
         this.hand = hand;
         this.monsterWidth = img.getWidth() / BMP_COLUMNS;
         this.monsterHeight = img.getHeight() / BMP_ROWS;
-        
+
         this.ctx = ctx;
         this.idMonster = idMonster;
         this.img = img;
         this.currentCase = 9;
-        
+
         this.initialLifePoints = initialLifePoints;
         this.currentLifePoint = initialLifePoints;
-        
+
         this.isAlive = true;
         this.isOnTheField = true;
         this.isAtTheEnd = false;

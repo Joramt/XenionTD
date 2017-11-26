@@ -11,12 +11,10 @@ import android.widget.RelativeLayout;
 import com.example.ecole.xeniontd.Annimation.AnnimationMissile;
 import com.example.ecole.xeniontd.R;
 import com.example.ecole.xeniontd.Views.Monsters;
+import com.example.ecole.xeniontd.utils.c;
 
 import java.util.Arrays;
 
-/**
- * Created by Nicolas on 2016-01-12.
- */
 public class Tower implements Comparable {
     private String nom;
     private int id;
@@ -512,21 +510,23 @@ public class Tower implements Comparable {
     public void checkIfMonstreInRange(int monstreID, int monstreCell) {
         int i = 0;
         while( i < reachableCell.length && reachableCell[i] != monstreCell){i++;}
-        String[] messageString = new String[4];
+
         Message message = hand.obtainMessage();
+        EntityStatus entityStatus =
+                new EntityStatus(c.ENTITY_TYPE_TOUR, "true", 0);
 
-        messageString[0] = "tour";
+        if(i > reachableCell.length)
+            entityStatus.setEntityState("false");
 
-        if(i < reachableCell.length)
-            messageString[1] = "true";
-        else
-            messageString[1] = "false";
+        entityStatus.setMonsterID(monstreID);
+        entityStatus.setTowerID(this.id);
 
-        messageString[2] = String.valueOf(monstreID);
-        messageString[3] = String.valueOf(this.id);
-
-        message.obj = messageString;
+        message.obj = entityStatus;
         hand.sendMessage(message);
+
+        Log.d("ent", entityStatus.getEntityType());
+        Log.d("ent", entityStatus.getEntityState());
+
     }
 
     public void fire(Monsters m){

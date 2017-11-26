@@ -2,9 +2,6 @@ package com.example.ecole.xeniontd.entities;
 
 import android.content.Intent;
 
-/**
- * Created by Nicolas on 2016-01-12.
- */
 public class Projectile {
     private int id;
     private String nom;

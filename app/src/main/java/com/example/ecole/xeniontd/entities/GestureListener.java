@@ -22,9 +22,6 @@ import com.example.ecole.xeniontd.utils.c;
 
 import java.util.ArrayList;
 
-/**
- * Created by Ecole on 1/8/2016.
- */
 public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     private static final int SWIPE_MIN_DISTANCE = 120;
