@@ -17,3 +17,33 @@ It's a project that I plan to eventually release on the Google Store.
 ## Contributor
 
 This project was developped with the help of Omar Bouach
+
+## TODO
+
+*Logical*
+- Improve even more the way entities communicate together ( more semantic & human readable )
+- Reduce the overall projectile size, and make it configurable ( scaling upon a defined constant )
+
+*Bug*
+- Refund doesn't actually refund
+- Fix the projectile trajectory so it always aim at the target's center regardless of the direction
+where it was fired
+
+*Feature&
+- Add the possibility to accelerate x2 / x5 the game speed
+- Add the possibility to slow x2 / x5 the game speed
+- Add the possibility to pause the game
+- Add the possibility to save / load a game
+- Add diifferent effect on tower ( only freezing effect for now )
+- Add different effect on ennemies ( tank / fast walker / boss )
+- Add different spell for the user to cast
+
+*UI*
+- Enhanced welcome / splash screen
+- Add a visual element to explain that you can swipe left to display an info panel
+
+*Final*
+- Animation on hit ( depending of the tower's effect )
+- Animation on tower build / refund
+- Animation on ground loading
+
