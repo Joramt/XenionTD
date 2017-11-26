@@ -20,6 +20,13 @@ This project was developped with the help of Omar Bouach
 
 ## TODO
 
+
+*URGENT*
+CLEAN THE CODE, there's some expected rookie mistake from the initial code when i was still a student :
+- casting a string to an int, and afterwards casting this int into a string
+- not semantic enough, need a refactoring   
+
+
 *Logical*
 - Improve even more the way entities communicate together ( more semantic & human readable )
 - Reduce the overall projectile size, and make it configurable ( scaling upon a defined constant )
